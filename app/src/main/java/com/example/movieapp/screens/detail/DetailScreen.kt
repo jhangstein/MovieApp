@@ -20,13 +20,15 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import coil.compose.AsyncImage
+import com.example.movieapp.viewmodels.FavoritesViewModel
 import com.example.movieapp.widgets.MovieRow
 import com.example.testapp.models.Movie
 import com.example.testapp.models.getMovies
 
-@Preview(showBackground = true)
 @Composable
-fun DetailScreen(navController: NavController = rememberNavController(), movieID: String? = "tt0499549"){
+fun DetailScreen(navController: NavController = rememberNavController(),
+                 movieID: String? = "tt0499549",
+                 viewModel: FavoritesViewModel){
 
     val movie = filterMovie(movieID)
 

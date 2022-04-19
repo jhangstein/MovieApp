@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.material.Icon
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
@@ -16,15 +18,16 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.movieapp.viewmodels.FavoritesViewModel
 import com.example.movieapp.widgets.MovieRow
 import com.example.testapp.models.Movie
 import com.example.testapp.models.getMovies
 
-@Preview(showBackground = true)
 @Composable
-fun FavoritesScreen (navController: NavController = rememberNavController()){
+fun FavoritesScreen (navController: NavController = rememberNavController(), viewModel: FavoritesViewModel){
 
 
     Scaffold(
@@ -52,8 +55,10 @@ fun FavoritesScreen (navController: NavController = rememberNavController()){
 
 @Composable
 fun MainContent(movieList: List<Movie> = getMovies()){
-    Column {
-        MovieRow(movieList[3])
-        MovieRow(movieList[7])
-    }
+
+/*    LazyColumn {
+        items(items = listOf(favoritesViewModel)) { movie ->
+            MovieRow(movie = )
+        }
+    }*/
 }
