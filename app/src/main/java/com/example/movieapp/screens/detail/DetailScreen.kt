@@ -50,14 +50,26 @@ fun DetailScreen(navController: NavController = rememberNavController(),
             }
         }
     ) {
-        MainContent(movie)
+        MainContent(movie, favorite = {movie -> viewModel.checkFavoriteStatus(movie)}) { movie ->
+            if (viewModel.checkFavoriteStatus(movie)) {
+                viewModel.removeMovie(movie)
+            } else {
+                viewModel.addMovie(movie)
+            }
+        }
     }
 }
 
 @Composable
-fun MainContent(movie: Movie){
+fun MainContent(movie: Movie,
+                favorite: (Movie) -> Boolean,
+                onFavoriteClick: (Movie) -> Unit = {}){
+
     Column(horizontalAlignment = Alignment.CenterHorizontally) {
-        MovieRow(movie = movie)
+        MovieRow(movie = movie,
+                favorite = favorite(movie),
+                onFavoriteClick = onFavoriteClick,
+                showIcon = true)
 
         Spacer(modifier = Modifier.height(8.dp))
 

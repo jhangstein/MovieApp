@@ -14,12 +14,7 @@ class FavoritesViewModel : ViewModel() {
 
 
     fun addMovie(movie: Movie){
-        if (_favoriteMovies.contains(movie)){
-            Log.i("addMovie", "Movie cannot be added, already in favorites!")
-        } else {
-            _favoriteMovies.add(movie)
-        }
-
+        _favoriteMovies.add(movie)
     }
 
     fun removeMovie(movie: Movie){
@@ -28,5 +23,9 @@ class FavoritesViewModel : ViewModel() {
 
     fun getAllMovies(movie: Movie) : List<Movie>{
         return _favoriteMovies
+    }
+
+    fun checkFavoriteStatus(movie: Movie) : Boolean {
+        return _favoriteMovies.contains(movie)
     }
 }

@@ -22,7 +22,10 @@ import com.example.testapp.models.getMovies
 import com.example.movieapp.widgets.MovieRow
 
 @Composable
-fun HomeScreen(navController: NavController = rememberNavController(), viewModel: FavoritesViewModel){
+fun HomeScreen(
+    navController: NavController = rememberNavController(),
+    viewModel: FavoritesViewModel
+) {
     var showMenu by remember {
         mutableStateOf(false)
     }
@@ -56,138 +59,32 @@ fun HomeScreen(navController: NavController = rememberNavController(), viewModel
             )
         }
     ) {
-        MainContent(navController = navController)
-    }
-    }
-
-@Composable
-fun MainContent(navController: NavController, movieList: List<Movie> = getMovies()){
-    LazyColumn {
-        items(items = movieList) { movie ->
-            MovieRow(movie = movie) { movieId ->
-                navController.navigate(route = MovieScreens.DetailScreen.name + "/$movieId")
+        MainContent(navController = navController, isFavorite = { movie ->
+            viewModel.checkFavoriteStatus(movie)
+        }) { movie ->
+            if (viewModel.checkFavoriteStatus(movie)) {
+                viewModel.removeMovie(movie)
+            } else {
+                viewModel.addMovie(movie)
             }
         }
     }
 }
 
-
-
-
-/*
 @Composable
-fun HomeScreen(navController: NavController = rememberNavController()) {
-    var showMenu by remember {
-        mutableStateOf(false)
-    }
-    MovieAppTheme {
-        Scaffold(
-            topBar = {
-                TopAppBar(title = { Text(text = "Movies") },
-                    actions = {
-                        IconButton(onClick = { showMenu = !showMenu }) {
-                            Icon(imageVector = Icons.Default.MoreVert, contentDescription = "More")
-                        }
-
-                        DropdownMenu(expanded = showMenu, onDismissRequest = { showMenu = false }) {
-                            DropdownMenuItem(onClick = {
-
-
-                            }) {
-                                Row {
-                                    Icon(
-                                        imageVector = Icons.Default.Favorite,
-                                        contentDescription = "Favorites",
-                                        modifier = Modifier.padding(4.dp)
-                                    )
-                                    Text(
-                                        text = "Favorites",
-                                        modifier = Modifier
-                                            .padding(4.dp)
-                                            .width(100.dp)
-                                    )
-                                }
-
-                            }
-                        }
-                    }
-                )
-            }
-        ) {
-            MainContent()
+fun MainContent(navController: NavController,
+                movieList: List<Movie> = getMovies(),
+                isFavorite: (Movie) -> Boolean,
+                onFavorite: (Movie) -> Unit = {}){
+    LazyColumn {
+        items(items = movieList) { movie ->
+            MovieRow(movie = movie,
+                    favorite = isFavorite(movie),
+                    onFavoriteClick = onFavorite,
+                    showIcon = true,
+                    onItemClick =  { movieId ->
+                navController.navigate(route = MovieScreens.DetailScreen.name + "/$movieId")
+            })
         }
     }
-}*/
-
-
-
-/*@OptIn(ExperimentalAnimationApi::class)
-@Composable
-fun MovieRow(movie: Movie = getMovies()[0],
-            onItemClick: (String) -> Unit = {}){
-
-    var openDescription by remember {
-        mutableStateOf(false)
-    }
-
-    Row {
-        Card(modifier = Modifier
-            .padding(4.dp)
-            .fillMaxWidth()
-            .clickable {
-                onItemClick(movie.id)
-                //openDescription = !openDescription
-            }
-            .heightIn(130.dp, 400.dp),
-            shape = RoundedCornerShape(corner = CornerSize(16.dp)),
-            elevation = 6.dp
-        ){
-            Row(verticalAlignment = Alignment.CenterVertically){
-                Surface(modifier = Modifier
-                    .padding(12.dp)
-                    .size(100.dp),
-                    shape = RectangleShape,
-                    elevation = 6.dp
-                ){
-                    Icon(imageVector = Icons.Default.AccountBox, contentDescription = "Here should be a profile pic")
-                }
-                Column {
-                    Text(text = movie.title,
-                        style = MaterialTheme.typography.h6)
-                    Text(text = "Director: ${movie.director}",
-                        style = MaterialTheme.typography.caption)
-                    Text(text = "Released: ${movie.year}",
-                        style = MaterialTheme.typography.caption)
-                    if (!openDescription)
-                        Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "More info")
-                    else
-                        Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "Less info")
-
-                    AnimatedVisibility(visible = openDescription,
-                        enter = slideInVertically()
-                    ) {
-                        Column {
-                            Divider(color = Color.LightGray, thickness = 1.dp)
-                            Text(
-                                text = "Plot: ${movie.plot}",
-                                style = MaterialTheme.typography.caption,
-                                modifier = Modifier.padding(2.dp)
-                            )
-                            Text(
-                                text = "Genre: ${movie.genre}",
-                                style = MaterialTheme.typography.caption,
-                                modifier = Modifier.padding(2.dp)
-                            )
-                            Text(
-                                text = "Rating: ${movie.rating}",
-                                style = MaterialTheme.typography.caption,
-                                modifier = Modifier.padding(2.dp)
-                            )
-                        }
-                    }
-                }
-
-            }
-        }
-    }
-}*/
+}

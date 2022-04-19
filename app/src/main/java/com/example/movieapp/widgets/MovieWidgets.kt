@@ -26,7 +26,10 @@ import com.example.testapp.models.getMovies
 @OptIn(ExperimentalAnimationApi::class)
 @Composable
 fun MovieRow(movie: Movie = getMovies()[0],
-            onItemClick: (String) -> Unit = {}) {
+            onItemClick: (String) -> Unit = {},
+            favorite: Boolean,
+            showIcon: Boolean,
+            onFavoriteClick: (Movie) -> Unit) {
 
     var openDescription by remember {
         mutableStateOf(false)
@@ -91,10 +94,17 @@ fun MovieRow(movie: Movie = getMovies()[0],
                         }
                     }
                 }
-
-                Column(modifier = Modifier.fillMaxWidth()
-                    .padding(10.dp),
-                    horizontalAlignment = Alignment.End){FavoriteButton()}
+                if(showIcon) {
+                    Column(
+                        modifier = Modifier.fillMaxWidth()
+                            .padding(10.dp),
+                        horizontalAlignment = Alignment.End
+                    ) {
+                        FavoriteButton(movie = movie, favorite = favorite) { movie ->
+                            onFavoriteClick(movie)
+                        }
+                    }
+                }
 
                 }
 
@@ -103,17 +113,21 @@ fun MovieRow(movie: Movie = getMovies()[0],
     }
 
 @Composable
-fun FavoriteButton() {
+fun FavoriteButton(movie: Movie, favorite: Boolean, onFavoriteClick: (Movie) -> Unit = {}) {
 
-    var favorite by remember {
+    var favoritepepega by remember {
         mutableStateOf(false)
     }
 
-    IconButton(onClick = {favorite = !favorite}) {
+    IconButton(onClick = {
+        favoritepepega = !favoritepepega
+        onFavoriteClick(movie)
+        }) {
         if (!favorite){
             Icon(imageVector = Icons.Default.FavoriteBorder,
                 contentDescription = "Favorite",
                 tint = Color.Cyan)
+
         } else {
             Icon(imageVector = Icons.Default.Favorite,
                 contentDescription = "Favorite",
