@@ -1,8 +1,14 @@
 package com.example.movieapp
 
+import android.content.Context
 import android.os.Bundle
+import android.os.PersistableBundle
+import android.util.AttributeSet
+import android.util.Log
+import android.view.View
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.slideInVertically
@@ -25,6 +31,7 @@ import androidx.compose.ui.unit.dp
 import com.example.movieapp.navigation.MovieNavigation
 import com.example.movieapp.screens.home.HomeScreen
 import com.example.movieapp.ui.theme.MovieAppTheme
+import com.example.movieapp.viewmodels.FavoritesViewModel
 import com.example.testapp.models.Movie
 import com.example.testapp.models.getMovies
 
@@ -33,6 +40,12 @@ import com.example.testapp.models.getMovies
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Log.i("MainActivity", "Process created")
+
+        /*//Initialize ViewModel for favorites
+        val favoritesViewModel: FavoritesViewModel by viewModels()
+        favoritesViewModel.favoriteMovies*/
+
         setContent {
             MovieAppTheme {
                 // A surface container using the 'background' color from the theme
@@ -47,76 +60,44 @@ class MainActivity : ComponentActivity() {
             }
         }
     }
+
+
+    override fun onStart() {
+        super.onStart()
+        Log.i("MainActivity", "Process started")
+    }
+
+
+    override fun onResume() {
+        super.onResume()
+        Log.i("MainActivity", "Process resumed")
+    }
+
+
+    override fun onStop() {
+        super.onStop()
+        Log.i("MainActivity", "Process stopped")
+    }
+
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Log.i("MainActivity", "Process destroyed :(")
+    }
+
 }
 
 
-/*@OptIn(ExperimentalAnimationApi::class)
-@Composable
-fun MovieRow(movieName: String, movieDirector: String, movieYear: String, moviePlot: String, movieGenres: String, movieRating: String){
 
-    var openDescription by remember {
-        mutableStateOf(false)
-    }
 
-    Row {
-        Card(modifier = Modifier
-            .padding(4.dp)
-            .fillMaxWidth()
-            .clickable {
-                openDescription = !openDescription
-            }
-            .heightIn(130.dp, 400.dp),
-        shape = RoundedCornerShape(corner = CornerSize(16.dp)),
-        elevation = 6.dp
-        ){
-            Row(verticalAlignment = Alignment.CenterVertically){
-                Surface(modifier = Modifier
-                    .padding(12.dp)
-                    .size(100.dp),
-                shape = RectangleShape,
-                elevation = 6.dp
-                ){
-                    Icon(imageVector = Icons.Default.AccountBox, contentDescription = "Here should be a profile pic")
-                }
-                Column {
-                    Text(text = movieName,
-                        style = MaterialTheme.typography.h6)
-                    Text(text = "Director: $movieDirector",
-                        style = MaterialTheme.typography.caption)
-                    Text(text = "Released: $movieYear",
-                        style = MaterialTheme.typography.caption)
-                    if (!openDescription)
-                        Icon(imageVector = Icons.Default.KeyboardArrowDown, contentDescription = "More info")
-                    else
-                        Icon(imageVector = Icons.Default.KeyboardArrowUp, contentDescription = "Less info")
 
-                    AnimatedVisibility(visible = openDescription,
-                    enter = slideInVertically()) {
-                        Column {
-                            Divider(color = Color.LightGray, thickness = 1.dp)
-                            Text(
-                                text = "Plot: $moviePlot",
-                                style = MaterialTheme.typography.caption,
-                                modifier = Modifier.padding(2.dp)
-                            )
-                            Text(
-                                text = "Genre: $movieGenres",
-                                style = MaterialTheme.typography.caption,
-                                modifier = Modifier.padding(2.dp)
-                            )
-                            Text(
-                                text = "Rating: $movieRating",
-                                style = MaterialTheme.typography.caption,
-                                modifier = Modifier.padding(2.dp)
-                            )
-                        }
-                    }
-                }
 
-            }
-        }
-    }
-}*/
+
+
+
+
+
+
 
 
 @Composable

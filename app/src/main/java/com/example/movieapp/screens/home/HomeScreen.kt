@@ -16,12 +16,13 @@ import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import com.example.movieapp.navigation.MovieScreens
 import com.example.movieapp.ui.theme.MovieAppTheme
+import com.example.movieapp.viewmodels.FavoritesViewModel
 import com.example.testapp.models.Movie
 import com.example.testapp.models.getMovies
 import com.example.movieapp.widgets.MovieRow
 
 @Composable
-fun HomeScreen(navController: NavController = rememberNavController()){
+fun HomeScreen(navController: NavController = rememberNavController(), viewModel: FavoritesViewModel){
     var showMenu by remember {
         mutableStateOf(false)
     }

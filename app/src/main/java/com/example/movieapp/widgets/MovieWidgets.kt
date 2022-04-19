@@ -10,9 +10,7 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBox
-import androidx.compose.material.icons.filled.KeyboardArrowDown
-import androidx.compose.material.icons.filled.KeyboardArrowUp
+import androidx.compose.material.icons.filled.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +31,7 @@ fun MovieRow(movie: Movie = getMovies()[0],
     var openDescription by remember {
         mutableStateOf(false)
     }
+
 
     Row {
         Card(modifier = Modifier
@@ -93,7 +92,33 @@ fun MovieRow(movie: Movie = getMovies()[0],
                     }
                 }
 
+                Column(modifier = Modifier.fillMaxWidth()
+                    .padding(10.dp),
+                    horizontalAlignment = Alignment.End){FavoriteButton()}
+
+                }
+
             }
         }
+    }
+
+@Composable
+fun FavoriteButton() {
+
+    var favorite by remember {
+        mutableStateOf(false)
+    }
+
+    IconButton(onClick = {favorite = !favorite}) {
+        if (!favorite){
+            Icon(imageVector = Icons.Default.FavoriteBorder,
+                contentDescription = "Favorite",
+                tint = Color.Cyan)
+        } else {
+            Icon(imageVector = Icons.Default.Favorite,
+                contentDescription = "Favorite",
+                tint = Color.Cyan)
+        }
+
     }
 }
